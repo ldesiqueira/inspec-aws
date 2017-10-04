@@ -6,7 +6,17 @@ example_ec2_id = attribute(
 example_ec2_name = attribute(
   'example_ec2_name',
   default: 'default.Example',
-  description: 'Name of exapmle ec2 instance')
+  description: 'Name of example ec2 instance')
+
+noroles_ec2_id = attribute(
+  'noroles_ec2_id',
+  default: 'default.noroles_ec2_id',
+  description: 'ID of no-roles ec2 instance')
+
+noroles_ec2_name = attribute(
+  'noroles_ec2_name',
+  default: 'default.NoRoles',
+  description: 'Name of no-roles ec2 instance')
 
 describe aws_ec2_instance(name: example_ec2_name) do
   it { should exist }
@@ -19,6 +29,11 @@ describe aws_ec2_instance(example_ec2_id) do
   its('image_id') { should eq 'ami-0d729a60' }
   its('instance_type') { should eq 't2.micro' }
   it { should have_roles }
+end
+
+describe aws_ec2_instance(noroles_ec2_id) do
+  it { should exist }
+  it { should_not have_roles }
 end
 
 #must use a real EC2 instance name, as the SDK will first check to see if its well formed before sending requests
